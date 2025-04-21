@@ -1,0 +1,2 @@
+class JupyterApiException(Exception):
+    pass

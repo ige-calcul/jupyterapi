@@ -1,38 +1,48 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/miniconda
 {
-	"name": "Miniconda (Python 3)",
-	"build": { 
+	"name": "Python 3 jupyterapi Dev Container",
+	"build": {
 		"context": "..",
 		"dockerfile": "Dockerfile"
 	},
-
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/git:1": {},
-		"ghcr.io/mamba-org/devcontainer-features/micromamba:1": {}
+		"ghcr.io/devcontainers/features/git:1": {}
 	},
-	
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-python.autopep8",
-				"ms-python.black-formatter",
-				"dbaeumer.vscode-eslint",
 				"ms-python.vscode-pylance",
 				"ms-python.python",
-				"ms-python.debugpy"
-			]
+				"ms-python.debugpy",
+				"ms-python.mypy-type-checker",
+				"dbaeumer.vscode-eslint",
+				"charliermarsh.ruff"
+			],
+			"settings": {
+				"mypy-type-checker.preferDaemon": true,
+				"mypy-type-checker.reportingScope": "workspace",
+				"git.autofetch": true,
+				"editor.formatOnSave": true,
+				"[python]": {
+					"editor.codeActionsOnSave": {
+						"source.fixAll": "explicit",
+						"source.organizeImports": "explicit"
+					},
+					"editor.defaultFormatter": "charliermarsh.ruff"
+				},
+				"python.missingPackage.severity": "Warning",
+				"python.testing.pytestEnabled": true
+			}
 		}
-	}
-
+	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "python --version",
-
+	"postCreateCommand": "pip install --user -e ."
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }

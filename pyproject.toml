@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jupyterapi"
+version = "1.0.0"
+
+[tool.pytest.ini_options]
+addopts = "-n auto --import-mode=importlib"
+testpaths = "tests"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D203", "D212"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101", # use of assert
+    "SLF001", # private member accessed
+    "ANN201", # missing return type
+    "D102", # missing function docstring
+    "D100", # missing module docstring
+    "D101", # missing class docstring
+    "INP001", # missing __init__.py
+]

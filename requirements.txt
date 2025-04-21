@@ -1,0 +1,11 @@
+# Packages
+urllib3
+requests
+
+# Dev packages
+ruff
+mypy
+pytest
+pytest-cov
+pytest-xdist
+types-requests

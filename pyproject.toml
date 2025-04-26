@@ -12,7 +12,7 @@ testpaths = "tests"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D203", "D212"]
+ignore = ["D203", "D212", "E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = [

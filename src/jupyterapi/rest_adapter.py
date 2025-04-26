@@ -1,5 +1,7 @@
 """Adapter Design Pattern for Jupyter Server REST API."""
 
+from __future__ import annotations
+
 import requests
 import urllib3
 
@@ -18,18 +20,91 @@ class RestAdapter:
         if not ssl_verify:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    def get(self, endpoint: str) -> list[dict]:
-        """Run HTTP GET request to Jupyter Server API."""
+    def _do(
+        self,
+        http_method: str,
+        endpoint: str,
+        ep_params: dict | None = None,
+        data: dict | None = None,
+    ) -> list[dict]:
+        """Run HTTP generic request to Jupyter Server API."""
         full_url = self.url + endpoint
         headers = {"Authorization": f"token {self._token}"}
-        response = requests.get(
-            url=full_url,
-            verify=self._ssl_verify,
-            headers=headers,
-            timeout=10,
-        )
+        try:
+            response = requests.request(
+                http_method,
+                url=full_url,
+                verify=self._ssl_verify,
+                headers=headers,
+                params=ep_params,
+                json=data,
+                timeout=10,
+            )
+        except requests.exceptions.RequestException as e:
+            msg = "Request failed"
+            raise JupyterApiError(msg) from e
         data_out = response.json()
         if response.ok:
             return data_out
 
         raise JupyterApiError(data_out["message"])
+
+    def get(self, endpoint: str, ep_params: dict | None = None) -> list[dict]:
+        """Run HTTP GET request to Jupyter Server API."""
+        return self._do(http_method="GET", endpoint=endpoint, ep_params=ep_params)
+
+    def patch(
+        self,
+        endpoint: str,
+        ep_params: dict | None = None,
+        data: dict | None = None,
+    ) -> None:
+        """Run HTTP PATCH request to Jupyter Server API."""
+        return self._do(
+            http_method="PATCH",
+            endpoint=endpoint,
+            ep_params=ep_params,
+            data=data,
+        )
+
+    def post(
+        self,
+        endpoint: str,
+        ep_params: dict | None = None,
+        data: dict | None = None,
+    ) -> None:
+        """Run HTTP POST request to Jupyter Server API."""
+        return self._do(
+            http_method="POST",
+            endpoint=endpoint,
+            ep_params=ep_params,
+            data=data,
+        )
+
+    def put(
+        self,
+        endpoint: str,
+        ep_params: dict | None = None,
+        data: dict | None = None,
+    ) -> None:
+        """Run HTTP PUT request to Jupyter Server API."""
+        return self._do(
+            http_method="PUT",
+            endpoint=endpoint,
+            ep_params=ep_params,
+            data=data,
+        )
+
+    def delete(
+        self,
+        endpoint: str,
+        ep_params: dict | None = None,
+        data: dict | None = None,
+    ) -> None:
+        """Run HTTP DELETE request to Jupyter Server API."""
+        return self._do(
+            http_method="DELETE",
+            endpoint=endpoint,
+            ep_params=ep_params,
+            data=data,
+        )

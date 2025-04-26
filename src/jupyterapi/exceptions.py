@@ -1,2 +1,5 @@
-class JupyterApiException(Exception):
-    pass
+"""Error classes for jupyterapi package."""
+
+
+class JupyterApiError(Exception):
+    """Generic error."""

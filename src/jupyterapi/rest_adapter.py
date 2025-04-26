@@ -4,7 +4,7 @@ import requests
 import urllib3
 
 from .api_utils import get_api_url
-from .exceptions import JupyterApiException
+from .exceptions import JupyterApiError
 
 
 class RestAdapter:
@@ -32,4 +32,4 @@ class RestAdapter:
         if response.ok:
             return data_out
 
-        raise JupyterApiException(data_out["message"])
+        raise JupyterApiError(data_out["message"])

@@ -2,7 +2,7 @@
 
 import urllib.parse
 
-from .exceptions import JupyterApiException
+from .exceptions import JupyterApiError
 
 
 def get_api_url(url: str) -> str:
@@ -10,9 +10,9 @@ def get_api_url(url: str) -> str:
     # TODO(ekwaly): #0 raise Exception ?
     url_items = urllib.parse.urlparse(url)
     if not url_items.scheme or not url_items.netloc:
-        # TODO(ekwaly): #0 put msh in logs
+        # TODO(ekwaly): #0 put msg in logs
         msg = "URL without scheme or incomplete"
-        raise JupyterApiException(msg)
+        raise JupyterApiError(msg)
 
     return urllib.parse.urlunparse(
         url_items._replace(
